@@ -22,7 +22,7 @@ public class BookServiceImplement implements BookService {
 
     public BookServiceImplement() {
         this.books = new HashSet<>();
-        this.read = new Scanner(System.in);
+        this.read = new Scanner(System.in).useDelimiter("\n");
     }
 
     @Override
@@ -114,11 +114,9 @@ public class BookServiceImplement implements BookService {
     public void menu(){
        int option;
 
-        
-
         do {
 
-            System.out.println();
+            System.out.println(constants.BookConstants.MENU_MESSAGE);
 
             option = read.nextInt();
 
@@ -128,25 +126,27 @@ public class BookServiceImplement implements BookService {
                     addNewBookToTheSet(startNewBook());
 
                     break;
+                
                 case 2:
-                    
-
-                    break;
-                case 3:
                     System.out.println("Insert the book to take:");
                     String bookToBorrow = read.next();
                     if (!lendBook(bookToBorrow)) {
                         System.out.println("Book is not available or doesnt exist in our library.");
                     }
                     break;
+                case 3:
+                    System.out.println("Insert the book to return:");
+                    String bookToReturn = read.next();
+                    if (!lendBook(bookToReturn)) {
+                        System.out.println("Book doesnt exist in our library.");
+                    }
+                    break;
                 case 4:
-                    System.out.println(sortByName());
+                    
+                    System.out.println(showBooksSet());
+                    
                     break;
                 case 5:
-                    System.out.println(sortByDisk());
-                    break;
-
-                case 6:
 
                     String optExit;
 
@@ -165,8 +165,22 @@ public class BookServiceImplement implements BookService {
                     throw new AssertionError();
             }
 
-        } while (option != 6);
+        } while (option != 5);
 
+    }
+    
+    @Override
+    public String showBooksSet(){
+        
+        String bookSet = "Book set of the library : \n";
+        
+        for (BookEntity unitaryBook : books) {
+            
+            bookSet += unitaryBook + "\n";
+            
+        }
+        
+        return bookSet;
     }
     
 }
